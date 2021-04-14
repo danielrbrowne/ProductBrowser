@@ -9,13 +9,6 @@ struct RemoteImage: View {
         var data = Data()
         var state = LoadState.loading
 
-        init(urlString: String) {
-            guard let parsedURL = URL(string: urlString) else {
-                fatalError("Invalid URL: \(urlString)")
-            }
-            fetchImage(from: parsedURL)
-        }
-
         init(url: URL) {
             fetchImage(from: url)
         }
@@ -44,15 +37,6 @@ struct RemoteImage: View {
         selectImage()
             .resizable()
             .foregroundColor(.gray)
-    }
-
-    init(urlString: String,
-         loading: Image = Image(systemName: "photo"),
-         failure: Image = Image(systemName: "multiply.circle")) {
-
-        _loader = StateObject(wrappedValue: Loader(urlString: urlString))
-        self.loading = loading
-        self.failure = failure
     }
 
     init(url: URL,
