@@ -144,8 +144,9 @@
 			isa = PBXGroup;
 			children = (
 				5728A25C2625F96300F3FC9C /* ContentView.swift */,
-				5728A2BF262602A000F3FC9C /* ProductsListView.swift */,
 				5728A2C4262602F300F3FC9C /* ProductDetailsView.swift */,
+				5728A2BF262602A000F3FC9C /* ProductsListView.swift */,
+				5728A2D826262A4200F3FC9C /* RemoteImage.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -162,7 +163,6 @@
 			isa = PBXGroup;
 			children = (
 				5728A2CD2626252E00F3FC9C /* DateDecodingStrategy+Extensions.swift */,
-				5728A2D826262A4200F3FC9C /* RemoteImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
