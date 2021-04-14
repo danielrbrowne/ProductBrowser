@@ -8,11 +8,13 @@ class ProductsListViewModel: ObservableObject {
 
     @Published var productsList: [Product] = []
     @Published var apiErrorResponse: (showAlert: Bool, error: Error?) = (false, nil)
+    private(set) var allProductsFetched: Bool = false
 
     // MARK: - Private properties
 
     private var apiClient: APIotaClient
     private var cancellable: AnyCancellable?
+    private var paginationRequest = FetchProductsEndpoint.PaginationRequest()
 
     // MARK: - Lifecycle
 
@@ -22,12 +24,19 @@ class ProductsListViewModel: ObservableObject {
 
     // MARK: - View model updating
 
-    func updateProductsList() {
+    /// Reload the products list from its beginning
+    func reloadProductsList() {
 
-        // First remove existing product items
         productsList.removeAll()
+        paginationRequest = FetchProductsEndpoint.PaginationRequest()
+        allProductsFetched = false
+        fetchNextProductsPage()
+    }
 
-        let endpoint = FetchProductsEndpoint()
+    /// Fetch the next page of products from the list
+    func fetchNextProductsPage() {
+
+        let endpoint = FetchProductsEndpoint(httpBody: paginationRequest)
         cancellable = apiClient.sendRequest(for: endpoint)
             .map({ apiResponse -> [Product] in
                 return apiResponse.products
@@ -41,7 +50,16 @@ class ProductsListViewModel: ObservableObject {
                 self.apiErrorResponse = (true, error)
 
                 return Just([]).eraseToAnyPublisher()
+            }).sink(receiveValue: { [weak self] fetchedProducts in
+                guard let self = self else {
+                    return
+                }
+                self.productsList.append(contentsOf: fetchedProducts)
+                if fetchedProducts.count < self.paginationRequest.take {
+                    self.allProductsFetched = true
+                } else {
+                    self.paginationRequest = self.paginationRequest.nextPage()
+                }
             })
-            .assign(to: \.productsList, on: self)
     }
 }

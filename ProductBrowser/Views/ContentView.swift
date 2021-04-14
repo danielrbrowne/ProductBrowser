@@ -11,7 +11,7 @@ struct ContentView: View {
                 .navigationBarItems(
                     trailing: Button(
                         action: {
-                            self.viewModel.updateProductsList()
+                            self.viewModel.reloadProductsList()
                         }
                     ) {
                         Text("Refresh")
