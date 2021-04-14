@@ -24,7 +24,7 @@ class ProductsListViewModel: ObservableObject {
 
     // MARK: - View model updating
 
-    /// Reload the products list from its beginning
+    /// Reload the products list from its beginning.
     func reloadProductsList() {
 
         productsList.removeAll()

@@ -1,6 +1,7 @@
 import APIota
 import Foundation
 
+/// An API client for the Products API.
 struct APIClient: APIotaClient {
     let session = URLSession.shared
 

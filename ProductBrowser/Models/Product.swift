@@ -1,5 +1,6 @@
 import Foundation
 
+/// A representation of product data received from the API.
 struct Product: Decodable, Identifiable {
     let id: UUID
     let createdAt: Date

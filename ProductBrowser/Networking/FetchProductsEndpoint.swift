@@ -1,6 +1,11 @@
 import APIota
 import Foundation
 
+/// An endpoint for fetching product information, as a list of products.
+///
+/// Results returned from this endpoint are paginated
+/// (i.e. Each new page of results is appended to the decoded product list
+/// until no more products can be fetched from the API).
 struct FetchProductsEndpoint: APIotaCodableEndpoint {
 
     /// Represents the API response for this endpoint.
