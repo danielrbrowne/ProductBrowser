@@ -8,13 +8,13 @@ class ProductsListViewModel: ObservableObject {
 
     @Published var productsList: [Product] = []
     @Published var apiErrorResponse: (showAlert: Bool, error: Error?) = (false, nil)
-    private(set) var allProductsFetched: Bool = false
 
     // MARK: - Private properties
 
     private var apiClient: APIotaClient
     private var cancellable: AnyCancellable?
     private var paginationRequest = FetchProductsEndpoint.PaginationRequest()
+    private var canFetchNextProductPage: Bool = true
 
     // MARK: - Lifecycle
 
@@ -29,12 +29,16 @@ class ProductsListViewModel: ObservableObject {
 
         productsList.removeAll()
         paginationRequest = FetchProductsEndpoint.PaginationRequest()
-        allProductsFetched = false
-        fetchNextProductsPage()
+        canFetchNextProductPage = true
+        fetchNextProductsPageIfAvailable()
     }
 
-    /// Fetch the next page of products from the list
-    func fetchNextProductsPage() {
+    /// Fetch the next page of products from the list (if available).
+    func fetchNextProductsPageIfAvailable() {
+
+        guard canFetchNextProductPage else {
+            return
+        }
 
         let endpoint = FetchProductsEndpoint(httpBody: paginationRequest)
         cancellable = apiClient.sendRequest(for: endpoint)
@@ -56,7 +60,7 @@ class ProductsListViewModel: ObservableObject {
                 }
                 self.productsList.append(contentsOf: fetchedProducts)
                 if fetchedProducts.count < self.paginationRequest.take {
-                    self.allProductsFetched = true
+                    self.canFetchNextProductPage = false
                 } else {
                     self.paginationRequest = self.paginationRequest.nextPage()
                 }

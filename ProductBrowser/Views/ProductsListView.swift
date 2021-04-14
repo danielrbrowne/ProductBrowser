@@ -12,8 +12,10 @@ struct ProductsListView: View {
                 ) {
                     Text(product.title ?? "A Product")
                 }.onAppear {
-                    if product.id == viewModel.productsList.last?.id && !viewModel.allProductsFetched {
-                        self.viewModel.fetchNextProductsPage()
+                    // If the last product in the list has appeared on screen,
+                    // attempt fetching the next products page from the API
+                    if product.id == viewModel.productsList.last?.id {
+                        self.viewModel.fetchNextProductsPageIfAvailable()
                     }
                 }
             }
