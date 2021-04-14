@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "APIota",
+        "repositoryURL": "https://github.com/danielrbrowne/APIota",
+        "state": {
+          "branch": null,
+          "revision": "590dd92231b0428f2b6910f856845d1895c58af9",
+          "version": "0.2.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
